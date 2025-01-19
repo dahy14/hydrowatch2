@@ -1,5 +1,12 @@
 import React from "react";
-const HistoricInvoice = () => {
+const HistoricInvoice = ({
+  bill,
+  billedTo,
+  consumption,
+  startDate,
+  endDate,
+  refNumber,
+}) => {
   return (
     <div className="font-sans dark:bg-gray-900 text-gray-100 h-auto bg-cover">
       <div className="flex justify-center">
@@ -8,11 +15,11 @@ const HistoricInvoice = () => {
             <div className="dark:text-gray-200 font-semibold">
               <p>
                 <strong>Reference # :</strong>{" "}
-                <span id="ref-CB">loading...</span>
+                <span id="ref-CB">{refNumber}</span>
               </p>
               <p>
                 <strong>Billed to :</strong>{" "}
-                <span id="billed-to-CB">loading...</span>
+                <span id="billed-to-CB">{billedTo}</span>
               </p>
             </div>
             <div className="text-right">
@@ -39,8 +46,8 @@ const HistoricInvoice = () => {
             </div>
             <div className="text-right">
               <p className="text-gray-600">-</p>
-              <p id="start-CB">loading...</p>
-              <p id="end-CB">loading...</p>
+              <p id="start-CB">{startDate}</p>
+              <p id="end-CB">{endDate}</p>
             </div>
           </div>
 
@@ -59,13 +66,13 @@ const HistoricInvoice = () => {
               <tbody>
                 <tr className="dark:text-white border border-gray-300">
                   <td id="consumption-CB" className="text-left p-2">
-                    loading...
+                    {Number(consumption / 1000).toFixed(3)}
                   </td>
                   <td
                     id="bill2-CB"
                     className="border border-gray-300 text-right p-2"
                   >
-                    loading...
+                    {bill}
                   </td>
                 </tr>
               </tbody>
@@ -73,7 +80,7 @@ const HistoricInvoice = () => {
 
             <div className="mt-4 text-right">
               <p className="text-xs font-bold dark:text-white sm:text-sm">
-                Total: <span id="bill-CB">loading...</span>
+                Total: <span id="bill-CB">{bill}</span>
               </p>
             </div>
           </div>

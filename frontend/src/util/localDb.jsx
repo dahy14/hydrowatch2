@@ -26,16 +26,6 @@ export function createLocalTenant(tenant) {
 export function getInvoiceLocally() {
   let invoice = localStorage.getItem("invoice");
   JSON.parse(invoice);
-  //   invoice.startDate = Timestamp.fromDate(
-  //     new Date(invoice.startDate.seconds * 1000)
-  //   );
-  //   invoice.endDate = Timestamp.fromDate(
-  //     new Date(invoice.endDate.seconds * 1000)
-  //   );
-  //   invoice.timestamp = Timestamp.fromDate(
-  //     new Date(invoice.timestamp.seconds * 1000)
-  //   );
-
   return invoice ? JSON.parse(invoice) : null;
 }
 
@@ -69,14 +59,6 @@ export async function getDataLocallyOrNah(storedKey) {
         createLocalTenant(tenantSnap);
       }
       return tenantSnap;
-    case "invoice":
-      console.log("Dont go here its broken");
-      if (window.localStorage.getItem("invoice")) {
-        invoiceSnap = getInvoiceLocally();
-      } else {
-        invoiceSnap = await getInvoices(name);
-        createLocalInvoice(invoiceSnap);
-      }
     case "cred":
       return getCredLocally();
     case "userData":

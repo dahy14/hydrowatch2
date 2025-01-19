@@ -44,9 +44,7 @@ export async function getInvoices(id) {
     limit(12)
   );
   const docSnap = await getDocs(q);
-
   let data = [];
-
   docSnap.forEach((doc) => {
     data.push({ ...doc.data(), id: doc.id });
   });

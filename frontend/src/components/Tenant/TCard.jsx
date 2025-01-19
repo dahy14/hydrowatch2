@@ -53,7 +53,7 @@ const TCard = ({ id, name, vol, date }) => {
 
         <div className="p-2 bg-gray-100 dark:bg-gray-800 rounded-md dark:border dark:border-gray-700 mb-2">
           <p className="text-xs sm:text-sm lg:text-base xl:text-lg">
-            Billing Period: {dayjs(date).format("MMMM ")}
+            Billing Period: {dayjs(date).format("MMMM")}
           </p>
         </div>
       </div>

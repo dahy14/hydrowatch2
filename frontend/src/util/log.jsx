@@ -26,7 +26,6 @@ export async function logOut() {
   localStorage.removeItem("tenant");
   localStorage.removeItem("invoice");
 }
-
 export async function checkAuth() {
   return new Promise((resolve, reject) => {
     onAuthStateChanged(auth, (user) => {
@@ -40,17 +39,14 @@ export async function checkAuth() {
     });
   });
 }
-
 export async function checkUser(cred) {
   const tenants = await getFDB("tenants");
   let status = null;
   let i = 0;
-
   while (status == null && i < tenants.length) {
     if ((tenants[i].email == cred.user.email) & tenants[i].adminStatus) {
       status = "admin";
     }
-
     if (
       (tenants[i].email == cred.user.email) &
       (tenants[i].adminStatus == undefined)
@@ -68,12 +64,10 @@ export async function checkUser(cred) {
   }
   return status;
 }
-
 export async function getTenantDataFromAuthToken(cred) {
   const tenants = await getFDB("tenants");
   let tenantData = null;
   let i = 0;
-
   while (tenantData == null && i < tenants.length) {
     if (tenants[i].email == cred.email) {
       tenantData = tenants[i];

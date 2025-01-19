@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import TNavbar from "../../components/Tenant/TNavbar";
 import TSidebar from "../../components/Tenant/TSidebar";
-
 import ThemeContextProvider from "../../context/ThemeContextProvider";
 import CurrentInvoice from "../../components/Tenant/CurrentInvoice";
-
 import { getDataLocallyOrNah } from "../../util/localDb";
 import { getRDB } from "../../util/getRealTimeDb";
 import { retDate } from "../../util/checkDate";
 import generateInvoice from "../../util/generateInvoice";
+import { generateSecureUID } from "../../util/generateUID";
 import dayjs from "dayjs";
 
 const Currentbill = () => {
@@ -25,13 +24,16 @@ const Currentbill = () => {
     };
     aData();
   }, []);
-
   useEffect(() => {
     const fetchUserData = async () => {
-      const data = await getRDB(`UsersData/${tenantData.deviceId}`);
-      set_UserData(data);
-      const d = retDate(data.timestamp);
-      setDate(d);
+      try {
+        const data = await getRDB(`UsersData/${tenantData.deviceId}`);
+        set_UserData(data);
+        const d = retDate(data.timestamp);
+        setDate(d);
+      } catch (error) {
+        console.log(error);
+      }
     };
     fetchUserData();
     const period = setInterval(fetchUserData, 1000);
@@ -39,20 +41,22 @@ const Currentbill = () => {
   }, [tenantData]);
 
   useEffect(() => {
+    // to be honest there is no need to create this function, the simulation of new month is on the server, so the server will generate the invoice
     const difference = dateNow.current.diff(date.end, "day");
-
-    console.log(difference);
     if (dateNow.current.format("MMMM D, YYYY") === date.end) {
-      console.log("Billing Period");
-      const generatedId = generateInvoice(
+      generateInvoice(
         tenantData.name,
         _userData.consumption,
         date.start,
         date.end
       );
-      id.current = generatedId;
     }
   }, [_userData]);
+
+  useEffect(() => {
+    const generatedId = generateSecureUID();
+    id.current = generatedId;
+  }, []);
 
   return (
     <ThemeContextProvider>
@@ -61,7 +65,7 @@ const Currentbill = () => {
         <div className="grow ml-16 md:ml-64 h-full">
           <TNavbar />
           <CurrentInvoice
-            ref={id}
+            refNum={id.current}
             vol={_userData.consumption}
             name={tenantData.name}
             startDate={date.start}

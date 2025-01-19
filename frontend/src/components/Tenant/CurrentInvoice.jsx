@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getCurrentBill } from "../../util/getCurrentBill";
 
-const CurrentInvoice = ({ vol, name, ref, startDate, endDate }) => {
+const CurrentInvoice = ({ vol, name, refNum, startDate, endDate }) => {
   const [bill, setBill] = useState(0);
   useEffect(() => {
     const fetchBill = async () => {
@@ -21,7 +21,7 @@ const CurrentInvoice = ({ vol, name, ref, startDate, endDate }) => {
           <div className="flex justify-between text-sm">
             <div className="dark:text-gray-200 font-semibold">
               <p>
-                <strong>Reference # :</strong> <span id="ref-CB">{ref}</span>
+                <strong>Reference # :</strong> <span id="ref-CB">{refNum}</span>
               </p>
               <p>
                 <strong>Billed to :</strong>{" "}

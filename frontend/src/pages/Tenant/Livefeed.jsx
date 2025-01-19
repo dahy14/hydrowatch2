@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import TCard from "../../components/Tenant/TCard";
 import TNavbar from "../../components/Tenant/TNavbar";
 import TSidebar from "../../components/Tenant/TSidebar";
@@ -9,23 +9,27 @@ import { getDataLocallyOrNah } from "../../util/localDb";
 
 const LiveFeed = () => {
   const [roomUnit, setRoomUnit] = useState(NaN);
+  const rdb = useRef(null);
   const [_userData, set_UserData] = useState({});
   const [tenantData, setTenantData] = useState({});
 
   useEffect(() => {
     const aData = async () => {
       const tenantSnap = await getDataLocallyOrNah("tenant"); // get tenant data || needs once
-      console.log("Tenant Snap", tenantSnap);
       setTenantData(tenantSnap);
-      console.log(tenantData);
     };
     aData();
   }, []);
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const data = await getRDB(`UsersData/${tenantData.deviceId}`);
-      set_UserData(data);
+      try {
+        const data = await getRDB(`UsersData/${tenantData.deviceId}`);
+        rdb.current = data;
+        set_UserData(rdb.current);
+      } catch (error) {
+        console.log(error);
+      }
     };
     fetchUserData();
     const period = setInterval(fetchUserData, 1000);
